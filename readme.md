@@ -1,10 +1,10 @@
 # Intro
 This is a simple batch tensor addition example with Xilinx SDAccel and CMake.  
-Targeted SDx version is 2019.1 but it also should work fine with 2018.3 without any modifications.
+The targeted SDx version is 2019.1 but it also should work fine with 2018.3 without any modifications.
 
 # Steps to...
 The path to SDAccel platform file(*.xpfm) should be set to the environment variable `AWS_PLATFORM`.  
-For configuring CMake and building host program, run:
+For configuring CMake and building the host program, run:
 ```
 mkdir build
 cmake ..
