@@ -1,0 +1,15 @@
+/Emulation-SW/
+/Emulation-HW/
+/System/
+/data/
+/_sdx/
+/build/
+/cmake-build-debug/
+/cmake-build-release/
+.cproject
+.project
+.settings
+project.sdx
+*.str
+*.zip
+/.idea/
