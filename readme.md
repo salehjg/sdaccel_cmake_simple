@@ -31,3 +31,6 @@ sudo sh
 source $XILINX_XRT/setup.sh
 ./MyHostExecutable
 ```
+# Useful Links
+[Link1](https://github.com/Xilinx/SDAccel-Tutorials/blob/master/docs/Pathway3/ProfileAndTraceReports.md)
+[Link2](https://github.com/Xilinx/SDAccel-Tutorials/blob/master/docs/Pathway3/HardwareExec.md)
