@@ -34,7 +34,7 @@ source $XILINX_XRT/setup.sh
 # Useful Links
 [Link1](https://github.com/Xilinx/SDAccel-Tutorials/blob/master/docs/Pathway3/ProfileAndTraceReports.md)  
 [Link2](https://github.com/Xilinx/SDAccel-Tutorials/blob/master/docs/Pathway3/HardwareExec.md)  
-# Libraries
-[HLS Lib](https://github.com/definelicht/hlslib)
 [SDAccel Development Environment Help for 2019.1](https://www.xilinx.com/html_docs/xilinx2019_1/sdaccel_doc/znf1520531165689.html#znf1520531165689)  
 [SDx Command and Utility Reference Guide for 2019.1](https://www.xilinx.com/support/documentation/sw_manuals/xilinx2019_1/ug1279-sdx-command-utility-reference-guide.pdf)  
+# Libraries
+[HLS Lib](https://github.com/definelicht/hlslib)
