@@ -2,7 +2,7 @@
 // Created by saleh on 11/11/19.
 //
 
-#define MAX_SLICE_LEN   1024
+#define MAX_SLICE_LEN   4
 
 template <typename DType>
 void addition(
@@ -70,6 +70,6 @@ void task_addition(
 
 #pragma HLS INTERFACE s_axilite port=return     bundle=control
 
-    addition<float>(inputTn1, inputTn2, outputTn, dim0, dim1, 128);
+    addition<float>(inputTn1, inputTn2, outputTn, dim0, dim1, 2);
 }
 }

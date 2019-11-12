@@ -4,8 +4,8 @@
 #include "xcl2.hpp"
 #include <vector>
 
-#define BATCH 20
-#define SLICE 8
+#define BATCH 2
+#define SLICE 4
 #define LENGTH (BATCH*SLICE)
 
 int main(int argc, char **argv) {

@@ -13,10 +13,11 @@ target_link_libraries(MyHostExecutable ${SDAccel_LIBRARIES})
 
 add_custom_target(compile_swemu
         ${SDAccel_XOCC}
+        -g 
         -c -t sw_emu
         --platform $ENV{AWS_PLATFORM} -R2
-        --profile_kernel data:all:all:all
-        --profile_kernel stall:all:all
+        #--profile_kernel data:all:all:all
+        #--profile_kernel stall:all:all
         --profile_kernel exec:all:all
         --kernel task_addition
         ${CMAKE_SOURCE_DIR}/kernels/kernel_addition.cpp
@@ -24,10 +25,11 @@ add_custom_target(compile_swemu
 
 add_custom_target(compile_hwemu
         ${SDAccel_XOCC}
+        -g 
         -c -t hw_emu
         --platform $ENV{AWS_PLATFORM} -R2
-        --profile_kernel data:all:all:all
-        --profile_kernel stall:all:all
+        #--profile_kernel data:all:all:all
+        #--profile_kernel stall:all:all
         --profile_kernel exec:all:all
         --kernel task_addition
         ${CMAKE_SOURCE_DIR}/kernels/kernel_addition.cpp
@@ -35,10 +37,11 @@ add_custom_target(compile_hwemu
 
 add_custom_target(compile_hw
         ${SDAccel_XOCC}
+        -g 
         -c -t hw
         --platform $ENV{AWS_PLATFORM} -R2
-        --profile_kernel data:all:all:all
-        --profile_kernel stall:all:all
+        #--profile_kernel data:all:all:all
+        #--profile_kernel stall:all:all
         --profile_kernel exec:all:all
         --kernel task_addition
         ${CMAKE_SOURCE_DIR}/kernels/kernel_addition.cpp
@@ -46,8 +49,12 @@ add_custom_target(compile_hw
 
 add_custom_target(link_swemu
         ${SDAccel_XOCC}
+        -g 
         -l -t sw_emu
         --platform $ENV{AWS_PLATFORM}
+        #--profile_kernel data:all:all:all
+        #--profile_kernel stall:all:all
+        --profile_kernel exec:all:all
         --optimize 0
         --nk task_addition:1
         --sp task_addition_1.inputTn1:bank1
@@ -58,8 +65,12 @@ add_custom_target(link_swemu
 
 add_custom_target(link_hwemu
         ${SDAccel_XOCC}
+        -g 
         -l -t hw_emu
         --platform $ENV{AWS_PLATFORM}
+        #--profile_kernel data:all:all:all
+        #--profile_kernel stall:all:all
+        --profile_kernel exec:all:all
         --optimize 0
         --nk task_addition:1
         --sp task_addition_1.inputTn1:bank1
@@ -70,8 +81,12 @@ add_custom_target(link_hwemu
 
 add_custom_target(link_hw
         ${SDAccel_XOCC}
+        -g 
         -l -t hw
         --platform $ENV{AWS_PLATFORM}
+        #--profile_kernel data:all:all:all
+        #--profile_kernel stall:all:all
+        --profile_kernel exec:all:all
         --optimize 0
         --nk task_addition:1
         --sp task_addition_1.inputTn1:bank1
@@ -83,3 +98,4 @@ add_custom_target(link_hw
 SET(platform $ENV{AWS_PLATFORM})
 configure_file(${CMAKE_SOURCE_DIR}/scripts/launch_swemu.sh ${CMAKE_BINARY_DIR}/launch_swemu.sh @ONLY)
 configure_file(${CMAKE_SOURCE_DIR}/scripts/launch_hwemu.sh ${CMAKE_BINARY_DIR}/launch_hwemu.sh @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/scripts/sdaccel.ini ${CMAKE_BINARY_DIR}/sdaccel.ini COPYONLY)
