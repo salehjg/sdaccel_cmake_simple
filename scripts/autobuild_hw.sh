@@ -1,3 +1,9 @@
-make compile_hw>autobuild_hw_log.txt
-make link_hw>>autobuild_hw_log.txt
+echo "====================================================================================" | tee autobuild_hw_log.txt
+echo "====================================================================================" | tee -a autobuild_hw_log.txt
+make compile_hw | tee -a autobuild_hw_log.txt
+echo "====================================================================================" | tee -a autobuild_hw_log.txt
+echo "====================================================================================" | tee -a autobuild_hw_log.txt
+make link_hw | tee -a autobuild_hw_log.txt
+echo "====================================================================================" | tee -a autobuild_hw_log.txt
+echo "====================================================================================" | tee -a autobuild_hw_log.txt
 sudo poweroff
