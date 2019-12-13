@@ -5,13 +5,14 @@ PROJECT(SDAccel_CMake_Simple)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/hlslib/cmake)
 find_package(SDAccel REQUIRED)
 
-message("${OpenCL_DIR}")
-
 add_executable(MyHostExecutable src/MyHostExecutable.cpp src/xcl2.cpp)
 include_directories(${SDAccel_INCLUDE_DIRS} inc/)
 target_link_libraries(MyHostExecutable ${SDAccel_LIBRARIES})
 
-
+set(PASTEBIN_0_1 "0" CACHE STRING "Enable or disable PasteBin agent for uploading autobuild log files to PasteBin.") 
+set(PASTEBIN_USERNAME "" CACHE STRING "PasteBin Account's Username") 
+set(PASTEBIN_PASSWORD "" CACHE STRING "PasteBin Account's Password") 
+set(PASTEBIN_API_KEY  "" CACHE STRING "PasteBin Account's API Key") 
 
 add_custom_target(compile_swemu
         ${SDAccel_XOCC}
@@ -101,6 +102,8 @@ SET(platform $ENV{AWS_PLATFORM})
 configure_file(${CMAKE_SOURCE_DIR}/scripts/launch_swemu.sh ${CMAKE_BINARY_DIR}/launch_swemu.sh @ONLY)
 configure_file(${CMAKE_SOURCE_DIR}/scripts/launch_hwemu.sh ${CMAKE_BINARY_DIR}/launch_hwemu.sh @ONLY)
 configure_file(${CMAKE_SOURCE_DIR}/scripts/sdaccel.ini ${CMAKE_BINARY_DIR}/sdaccel.ini COPYONLY)
-configure_file(${CMAKE_SOURCE_DIR}/scripts/autobuild_swemu.sh ${CMAKE_BINARY_DIR}/autobuild_swemu.sh COPYONLY)
-configure_file(${CMAKE_SOURCE_DIR}/scripts/autobuild_hwemu.sh ${CMAKE_BINARY_DIR}/autobuild_hwemu.sh COPYONLY)
-configure_file(${CMAKE_SOURCE_DIR}/scripts/autobuild_hw.sh ${CMAKE_BINARY_DIR}/autobuild_hw.sh COPYONLY)
+
+configure_file(${CMAKE_SOURCE_DIR}/scripts/autobuild_swemu.sh ${CMAKE_BINARY_DIR}/autobuild_swemu.sh @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/scripts/autobuild_hwemu.sh ${CMAKE_BINARY_DIR}/autobuild_hwemu.sh @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/scripts/autobuild_hw.sh ${CMAKE_BINARY_DIR}/autobuild_hw.sh @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/scripts/PasteBinAgentForAutoBuilds.py ${CMAKE_BINARY_DIR}/PasteBinAgentForAutoBuilds.py @ONLY)
