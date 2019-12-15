@@ -9,6 +9,11 @@
 #define LENGTH (BATCH*SLICE)
 
 int main(int argc, char **argv) {
+    if(argc!=2){
+        std::cout <<"Please enter the abs path for xclbin or awsxclbin file as the first and only argument.\nAborting...\n";
+    }
+    std::string BinaryFile(argv[1]);
+    //------------------------------------------------------------------------------------------
     cl_int err;
     std::vector<float, aligned_allocator<float>> h_a(LENGTH); //host memory for a vector
     std::vector<float, aligned_allocator<float>> h_b(LENGTH); //host memory for b vector
@@ -40,7 +45,7 @@ int main(int argc, char **argv) {
 
     {
         printf("INFO: loading kernel\n");
-        std::string BinaryFile = "fpga_image.xclbin";
+        //std::string BinaryFile = "fpga_image.xclbin"; (now the host program gets this as an argument)
         auto fileBuf = xcl::read_binary_file(BinaryFile);
         cl::Program::Binaries bins{{fileBuf.data(), fileBuf.size()}};
         devices.resize(1);
