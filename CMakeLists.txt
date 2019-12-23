@@ -14,6 +14,31 @@ set(PASTEBIN_USERNAME "" CACHE STRING "PasteBin Account's Username")
 set(PASTEBIN_PASSWORD "" CACHE STRING "PasteBin Account's Password") 
 set(PASTEBIN_API_KEY  "" CACHE STRING "PasteBin Account's API Key") 
 
+# Creates TCL scripts for the given kernel.
+function(synthesis_target
+        KERNEL_FILE
+        KERNEL_NAME
+        KERNEL_CLOCK
+        KERNEL_CLOCK_UNCERTAINTY
+        HLSLIB_PART_NAME
+        SYNTHESIS_FLAGS)
+
+    set(HLSLIB_PROJECT_NAME "${KERNEL_NAME}")
+    set(HLSLIB_SRC_SYNTHESIS "${KERNEL_FILE}")
+    set(HLSLIB_ENTRY_FUNCTION "${KERNEL_NAME}")
+    set(HLSLIB_TARGET_CLOCK "${KERNEL_CLOCK}")
+    set(HLSLIB_TARGET_CLOCK_UNCERTAINTY "${KERNEL_CLOCK_UNCERTAINTY}")
+    set(HLSLIB_SYNTHESIS_FLAGS ${SYNTHESIS_FLAGS})
+    configure_file(scripts/Synthesis.tcl.in Synthesize${KERNEL_NAME}.tcl)
+
+endfunction()
+
+configure_file(scripts/SynthesisScriptLauncherBatch.sh.in SynthesisScriptLauncherBatch.sh)
+add_custom_target(synthesis COMMAND sh SynthesisScriptLauncherBatch.sh)
+
+# Creating required tcl scripts to run hls synthesis
+synthesis_target("${CMAKE_SOURCE_DIR}/kernels/kernel_addition.cpp" "task_addition" "250" "0.9" "xcvu9p-flga2104-2-e" "-I${CMAKE_SOURCE_DIR}/kernels")
+
 add_custom_target(compile_swemu
         ${SDAccel_XOCC}
         -g 
@@ -23,6 +48,7 @@ add_custom_target(compile_swemu
         #--profile_kernel stall:all:all
         --profile_kernel exec:all:all
         --kernel task_addition
+        --include ${CMAKE_SOURCE_DIR}/kernels/
         ${CMAKE_SOURCE_DIR}/kernels/kernel_addition.cpp
         -o kernel_addition_swemu.xo)
 
@@ -35,6 +61,7 @@ add_custom_target(compile_hwemu
         #--profile_kernel stall:all:all
         --profile_kernel exec:all:all
         --kernel task_addition
+        --include ${CMAKE_SOURCE_DIR}/kernels/
         ${CMAKE_SOURCE_DIR}/kernels/kernel_addition.cpp
         -o kernel_addition_hwemu.xo)
 
@@ -47,6 +74,8 @@ add_custom_target(compile_hw
         #--profile_kernel stall:all:all
         --profile_kernel exec:all:all
         --kernel task_addition
+        --include ${CMAKE_SOURCE_DIR}/kernels/
+        -R1
         ${CMAKE_SOURCE_DIR}/kernels/kernel_addition.cpp
         -o kernel_addition_hw.xo)
 

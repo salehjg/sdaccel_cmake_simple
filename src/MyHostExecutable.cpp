@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
     for (i = 0; i < LENGTH; i++) {
         h_a[i] = i;
         h_b[i] = i;
-        h_c[i] = 0;
+        h_c[i] = h_a[i] + h_b[i];
         h_result[i] = 0;
     }
 
@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
 
         // Check Results
         for (int i = 0; i < LENGTH; i++) {
-            if ((h_a[i] + h_b[i]) != h_result[i]) {
+            if ((h_c[i]) != h_result[i]) {
                 printf("ERROR - %d - a=%f, b=%f, c=%f, c_fpga=%f\n",
                        i,
                        h_a[i],
@@ -94,7 +94,7 @@ int main(int argc, char **argv) {
                        h_c[i],
                        h_result[i]);
                 match = false;
-                break;
+                //break;
             }
         }
     }
