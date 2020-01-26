@@ -36,8 +36,10 @@ endfunction()
 configure_file(scripts/SynthesisScriptLauncherBatch.sh.in SynthesisScriptLauncherBatch.sh)
 add_custom_target(synthesis COMMAND sh SynthesisScriptLauncherBatch.sh)
 
+set(SYNTHESIS_FLAGS "-DHLSLIB_SYNTHESIS -DHLSLIB_XILINX -std=c++11")
+
 # Creating required tcl scripts to run hls synthesis
-synthesis_target("${CMAKE_SOURCE_DIR}/kernels/kernel_addition.cpp" "task_addition" "250" "0.9" "xcvu9p-flga2104-2-e" "-I${CMAKE_SOURCE_DIR}/kernels")
+synthesis_target("${CMAKE_SOURCE_DIR}/kernels/kernel_addition.cpp" "task_addition" "250" "0.9" "xcvu9p-flga2104-2-e" "${SYNTHESIS_FLAGS} -I${CMAKE_SOURCE_DIR}/kernels -I${CMAKE_SOURCE_DIR}/hlslib/include")
 
 add_custom_target(compile_swemu
         ${SDAccel_XOCC}
@@ -48,7 +50,9 @@ add_custom_target(compile_swemu
         #--profile_kernel stall:all:all
         --profile_kernel exec:all:all
         --kernel task_addition
+        --xp prop:kernel.task_addition.kernel_flags="${SYNTHESIS_FLAGS}"
         --include ${CMAKE_SOURCE_DIR}/kernels/
+        --include ${CMAKE_SOURCE_DIR}/hlslib/include
         ${CMAKE_SOURCE_DIR}/kernels/kernel_addition.cpp
         -o kernel_addition_swemu.xo)
 
@@ -61,7 +65,9 @@ add_custom_target(compile_hwemu
         #--profile_kernel stall:all:all
         --profile_kernel exec:all:all
         --kernel task_addition
+        --xp prop:kernel.task_addition.kernel_flags="${SYNTHESIS_FLAGS}"
         --include ${CMAKE_SOURCE_DIR}/kernels/
+        --include ${CMAKE_SOURCE_DIR}/hlslib/include
         ${CMAKE_SOURCE_DIR}/kernels/kernel_addition.cpp
         -o kernel_addition_hwemu.xo)
 
@@ -74,7 +80,9 @@ add_custom_target(compile_hw
         #--profile_kernel stall:all:all
         --profile_kernel exec:all:all
         --kernel task_addition
+        --xp prop:kernel.task_addition.kernel_flags="${SYNTHESIS_FLAGS}"
         --include ${CMAKE_SOURCE_DIR}/kernels/
+        --include ${CMAKE_SOURCE_DIR}/hlslib/include
         -R1
         ${CMAKE_SOURCE_DIR}/kernels/kernel_addition.cpp
         -o kernel_addition_hw.xo)
@@ -91,7 +99,8 @@ add_custom_target(link_swemu
         --nk task_addition:1
         --sp task_addition_1.inputTn1:bank1
         --sp task_addition_1.inputTn2:bank1
-        --sp task_addition_1.outputTn:bank1
+        --sp task_addition_1.outputTn1:bank1
+        --sp task_addition_1.outputTn2:bank1
         kernel_addition_swemu.xo
         -o fpga_image.xclbin)
 
@@ -107,7 +116,8 @@ add_custom_target(link_hwemu
         --nk task_addition:1
         --sp task_addition_1.inputTn1:bank1
         --sp task_addition_1.inputTn2:bank1
-        --sp task_addition_1.outputTn:bank1
+        --sp task_addition_1.outputTn1:bank1
+        --sp task_addition_1.outputTn2:bank1
         kernel_addition_hwemu.xo
         -o fpga_image.xclbin)
 
@@ -123,7 +133,8 @@ add_custom_target(link_hw
         --nk task_addition:1
         --sp task_addition_1.inputTn1:bank1
         --sp task_addition_1.inputTn2:bank1
-        --sp task_addition_1.outputTn:bank1
+        --sp task_addition_1.outputTn1:bank1
+        --sp task_addition_1.outputTn2:bank1
         kernel_addition_hw.xo
         -o fpga_image.xclbin)
 
