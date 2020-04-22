@@ -81,9 +81,9 @@ add_custom_target(compile_hw
         --profile_kernel exec:all:all
         --kernel task_addition
         --xp prop:kernel.task_addition.kernel_flags="${SYNTHESIS_FLAGS}"
+        --xp vivado_prop:run.impl_1.{STEPS.ROUTE_DESIGN.TCL.PRE}={/run/media/saleh/NVME_DATA/00_repo2/sdaccel_cmake_simple/scripts/slr_report.tcl}
         --include ${CMAKE_SOURCE_DIR}/kernels/
         --include ${CMAKE_SOURCE_DIR}/hlslib/include
-        -R1
         ${CMAKE_SOURCE_DIR}/kernels/kernel_addition.cpp
         -o kernel_addition_hw.xo)
 
@@ -118,6 +118,7 @@ add_custom_target(link_hwemu
         --sp task_addition_1.inputTn2:bank1
         --sp task_addition_1.outputTn1:bank1
         --sp task_addition_1.outputTn2:bank1
+        --xp vivado_prop:run.impl_1.{STEPS.ROUTE_DESIGN.TCL.PRE}={/run/media/saleh/NVME_DATA/00_repo2/sdaccel_cmake_simple/scripts/slr_report.tcl}
         kernel_addition_hwemu.xo
         -o fpga_image.xclbin)
 
@@ -135,6 +136,45 @@ add_custom_target(link_hw
         --sp task_addition_1.inputTn2:bank1
         --sp task_addition_1.outputTn1:bank1
         --sp task_addition_1.outputTn2:bank1
+        --xp vivado_prop:run.impl_1.{STEPS.ROUTE_DESIGN.TCL.PRE}={/run/media/saleh/NVME_DATA/00_repo2/sdaccel_cmake_simple/scripts/slr_report.tcl}
+        kernel_addition_hw.xo
+        -o fpga_image.xclbin)
+
+add_custom_target(link_interractive1
+        ${SDAccel_XOCC}
+        -g -l
+        --interactive synth
+        -t hw
+        --platform $ENV{AWS_PLATFORM}
+        #--profile_kernel data:all:all:all
+        #--profile_kernel stall:all:all
+        --profile_kernel exec:all:all
+        --optimize 0
+        --nk task_addition:1
+        --sp task_addition_1.inputTn1:bank1
+        --sp task_addition_1.inputTn2:bank1
+        --sp task_addition_1.outputTn1:bank1
+        --sp task_addition_1.outputTn2:bank1
+        --xp vivado_prop:run.impl_1.{STEPS.ROUTE_DESIGN.TCL.PRE}={/run/media/saleh/NVME_DATA/00_repo2/sdaccel_cmake_simple/scripts/slr_report.tcl}
+        kernel_addition_hw.xo
+        -o fpga_image.xclbin)
+
+add_custom_target(link_interractive2
+        ${SDAccel_XOCC}
+        -g -l
+        --interactive impl
+        -t hw
+        --platform $ENV{AWS_PLATFORM}
+        #--profile_kernel data:all:all:all
+        #--profile_kernel stall:all:all
+        --profile_kernel exec:all:all
+        --optimize 0
+        --nk task_addition:1
+        --sp task_addition_1.inputTn1:bank1
+        --sp task_addition_1.inputTn2:bank1
+        --sp task_addition_1.outputTn1:bank1
+        --sp task_addition_1.outputTn2:bank1
+        --xp vivado_prop:run.impl_1.{STEPS.ROUTE_DESIGN.TCL.PRE}={/run/media/saleh/NVME_DATA/00_repo2/sdaccel_cmake_simple/scripts/slr_report.tcl}
         kernel_addition_hw.xo
         -o fpga_image.xclbin)
 
